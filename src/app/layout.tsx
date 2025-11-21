@@ -1,11 +1,15 @@
-'use client'
-
+import type { Metadata } from 'next'
 import './globals.css'
 import './nprogress.css'
 import { MobileNav } from '@/components/layout/MobileNav'
 import { LoadingProvider } from '@/components/LoadingProvider'
 import { ToastProvider } from '@/components/ToastProvider'
 import { NavigationProgress } from '@/components/NavigationProgress'
+
+export const metadata: Metadata = {
+  title: 'Duitku Berkah',
+  description: 'Aplikasi pengelolaan keuangan pribadi',
+}
 
 export default function RootLayout({
   children,
