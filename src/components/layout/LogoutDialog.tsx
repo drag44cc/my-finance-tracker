@@ -1,8 +1,10 @@
-'use client'
+'use client';
 
-import { logout } from '@/app/auth/logout'
-import { LogOut, Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { logout } from '@/app/auth/logout';
+import { LogOut, Loader2 } from 'lucide-react';
+import { useLoading } from '@/components/LoadingProvider';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -11,21 +13,25 @@ import {
     DialogTitle,
     DialogTrigger,
     DialogFooter,
-    DialogClose
-} from "@/components/ui/dialog"
-import { Button } from '@/components/ui/button'
+    DialogClose,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 export function LogoutDialog() {
-    const [open, setOpen] = useState(false)
-    const [isLoggingOut, setIsLoggingOut] = useState(false)
+    const [open, setOpen] = useState(false);
+    const { startLoading, stopLoading, isLoading } = useLoading();
+    const router = useRouter();
 
     async function handleLogout() {
-        setIsLoggingOut(true)
+        startLoading();
         try {
-            await logout()
+            await logout();
+            router.push('/login');
+            setOpen(false);
         } catch (error) {
-            console.error('Logout failed', error)
-            setIsLoggingOut(false)
+            console.error('Logout failed', error);
+        } finally {
+            stopLoading();
         }
     }
 
@@ -52,10 +58,10 @@ export function LogoutDialog() {
                     <Button
                         variant="destructive"
                         onClick={handleLogout}
-                        disabled={isLoggingOut}
+                        disabled={isLoading}
                         className="bg-red-600 hover:bg-red-700 text-white"
                     >
-                        {isLoggingOut ? (
+                        {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Keluar...
@@ -67,5 +73,5 @@ export function LogoutDialog() {
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    )
+    );
 }

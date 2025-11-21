@@ -2,13 +2,14 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 export async function addTransaction(formData: FormData) {
     const supabase = await createClient()
 
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) redirect('/login')
+    if (!user) {
+        return { success: false, error: 'User not authenticated' }
+    }
 
     const amount = parseFloat(formData.get('amount') as string)
     const type = formData.get('type') as string // 'income' or 'expense'
@@ -30,7 +31,7 @@ export async function addTransaction(formData: FormData) {
 
     if (error) {
         console.error('Error adding transaction:', error)
-        redirect('/add?error=Failed to add transaction')
+        return { success: false, error: 'Failed to add transaction' }
     }
 
     // Update wallet balance
@@ -41,5 +42,5 @@ export async function addTransaction(formData: FormData) {
     }
 
     revalidatePath('/')
-    redirect('/')
+    return { success: true }
 }

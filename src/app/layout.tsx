@@ -1,28 +1,29 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { MobileNav } from "@/components/layout/MobileNav";
+'use client'
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Keuangan Pribadi",
-  description: "Aplikasi pencatat keuangan pribadi",
-};
+import './globals.css'
+import './nprogress.css'
+import { MobileNav } from '@/components/layout/MobileNav'
+import { LoadingProvider } from '@/components/LoadingProvider'
+import { ToastProvider } from '@/components/ToastProvider'
+import { NavigationProgress } from '@/components/NavigationProgress'
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="id" className="dark">
-      <body className={`${inter.className} bg-slate-950 text-slate-100 antialiased`}>
-        <main className="pb-20 min-h-screen">
-          {children}
-        </main>
-        <MobileNav />
+    <html lang="id">
+      <body className="overflow-x-hidden max-w-full">
+        <LoadingProvider>
+          <NavigationProgress />
+          <ToastProvider />
+          <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden max-w-full">
+            {children}
+            <MobileNav />
+          </main>
+        </LoadingProvider>
       </body>
     </html>
-  );
+  )
 }

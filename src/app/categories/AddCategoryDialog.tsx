@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { useLoading } from '@/components/LoadingProvider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Plus } from 'lucide-react'
 import {
     Dialog,
@@ -14,21 +16,23 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { addCategory } from './actions'
+import { toast } from 'sonner'
 
 export function AddCategoryDialog() {
     const [open, setOpen] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const { startLoading, stopLoading, isLoading } = useLoading()
 
     async function handleSubmit(formData: FormData) {
-        setIsLoading(true)
+        startLoading()
         try {
             await addCategory(formData)
-            setOpen(false) // Auto-close on success
+            toast.success('✅ Kategori berhasil ditambahkan!')
+            setOpen(false)
         } catch (error) {
             console.error('Failed to add category:', error)
-            // Optionally handle error (e.g., show toast)
+            toast.error('❌ Gagal menambahkan kategori.')
         } finally {
-            setIsLoading(false)
+            stopLoading()
         }
     }
 
@@ -42,7 +46,7 @@ export function AddCategoryDialog() {
             <DialogContent className="bg-slate-900 border-slate-800 text-slate-100">
                 <DialogHeader>
                     <DialogTitle>Tambah Kategori</DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="text-slate-400">
                         Buat kategori baru untuk mengorganisir transaksi Anda.
                     </DialogDescription>
                 </DialogHeader>
@@ -59,15 +63,15 @@ export function AddCategoryDialog() {
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="type">Tipe</Label>
-                        <select
-                            id="type"
-                            name="type"
-                            className="w-full h-10 rounded-md border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                            required
-                        >
-                            <option value="expense">Pengeluaran</option>
-                            <option value="income">Pemasukan</option>
-                        </select>
+                        <Select name="type" required>
+                            <SelectTrigger className="w-full bg-slate-950 border-slate-800 text-slate-100">
+                                <SelectValue placeholder="Pilih tipe" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-slate-950 border-slate-800 max-w-[calc(100vw-2rem)]">
+                                <SelectItem value="expense" className="text-slate-100">Pengeluaran</SelectItem>
+                                <SelectItem value="income" className="text-slate-100">Pemasukan</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="icon">Icon (Emoji)</Label>

@@ -11,6 +11,7 @@ interface AmountInputProps {
     required?: boolean
     className?: string
     autoFocus?: boolean
+    disabled?: boolean
 }
 
 export function AmountInput({
@@ -19,7 +20,8 @@ export function AmountInput({
     defaultValue,
     required = false,
     className = '',
-    autoFocus = false
+    autoFocus = false,
+    disabled = false
 }: AmountInputProps) {
     const [displayValue, setDisplayValue] = useState('')
     const [actualValue, setActualValue] = useState('')
@@ -51,6 +53,7 @@ export function AmountInput({
                 required={required}
                 className={className}
                 autoFocus={autoFocus}
+                disabled={disabled}
             />
             {/* Hidden input with actual numeric value for form submission */}
             <input type="hidden" name={name} value={actualValue} />

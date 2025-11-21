@@ -3,6 +3,7 @@
 import { deleteBudget } from './actions'
 import { Trash2, Loader2 } from 'lucide-react'
 import { useState } from 'react'
+import { useLoading } from '@/components/LoadingProvider'
 import {
     Dialog,
     DialogContent,
@@ -17,16 +18,17 @@ import { Button } from '@/components/ui/button'
 
 export function DeleteBudgetButton({ budgetId }: { budgetId: string }) {
     const [open, setOpen] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
+    const { startLoading, stopLoading, isLoading } = useLoading()
 
     async function handleDelete() {
-        setIsDeleting(true)
+        startLoading()
         try {
             await deleteBudget(budgetId)
             setOpen(false)
         } catch (error) {
             alert(error instanceof Error ? error.message : 'Gagal menghapus budget')
-            setIsDeleting(false)
+        } finally {
+            stopLoading()
         }
     }
 
@@ -53,10 +55,10 @@ export function DeleteBudgetButton({ budgetId }: { budgetId: string }) {
                     <Button
                         variant="destructive"
                         onClick={handleDelete}
-                        disabled={isDeleting}
+                        disabled={isLoading}
                         className="bg-red-600 hover:bg-red-700 text-white"
                     >
-                        {isDeleting ? (
+                        {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Menghapus...

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, PieChart, Plus, Wallet, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import NProgress from 'nprogress'
 
 export function MobileNav() {
     const pathname = usePathname()
@@ -20,6 +21,10 @@ export function MobileNav() {
         { href: '/budget', icon: PieChart, label: 'Budget' },
     ]
 
+    const handleClick = () => {
+        NProgress.start();
+    };
+
     return (
         <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-800 bg-slate-950/80 backdrop-blur-lg pb-safe">
             <div className="flex h-16 items-center justify-around px-2">
@@ -31,6 +36,7 @@ export function MobileNav() {
                             <Link
                                 key={item.href}
                                 href={item.href}
+                                onClick={handleClick}
                                 className="relative -top-5 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 transition-transform active:scale-95"
                             >
                                 <item.icon className="h-6 w-6" />
@@ -42,6 +48,7 @@ export function MobileNav() {
                         <Link
                             key={item.href}
                             href={item.href}
+                            onClick={handleClick}
                             className={cn(
                                 "flex flex-col items-center justify-center space-y-1 text-xs font-medium transition-colors",
                                 isActive ? "text-indigo-400" : "text-slate-400 hover:text-slate-200"

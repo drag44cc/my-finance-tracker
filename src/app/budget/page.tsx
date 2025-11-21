@@ -1,29 +1,11 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { setBudget } from './actions'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { AmountInput } from '@/components/ui/AmountInput'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Target, Plus } from 'lucide-react'
+import { Target } from 'lucide-react'
 import { DeleteBudgetButton } from './DeleteBudgetButton'
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { SetBudgetDialog } from './SetBudgetDialog'
 
 export default async function BudgetPage() {
     const supabase = await createClient()
@@ -69,41 +51,7 @@ export default async function BudgetPage() {
                     Budget Bulanan
                 </h1>
 
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                            <Plus className="h-4 w-4 mr-1" /> Set Budget
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-slate-900 border-slate-800 text-slate-100">
-                        <DialogHeader>
-                            <DialogTitle>Atur Budget</DialogTitle>
-                            <DialogDescription>
-                                Tentukan batas pengeluaran untuk setiap kategori.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <form action={setBudget} className="space-y-4 mt-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="categoryId">Kategori</Label>
-                                <Select name="categoryId" required>
-                                    <SelectTrigger className="bg-slate-950 border-slate-800">
-                                        <SelectValue placeholder="Pilih kategori" />
-                                    </SelectTrigger>
-                                    <SelectContent className="bg-slate-900 border-slate-800 text-slate-100">
-                                        {categories?.map(c => (
-                                            <SelectItem key={c.id} value={c.id}>{c.icon} {c.name}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="amount">Batas Maksimal (Rp)</Label>
-                                <AmountInput name="amount" placeholder="0" className="bg-slate-950 border-slate-800" required />
-                            </div>
-                            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">Simpan</Button>
-                        </form>
-                    </DialogContent>
-                </Dialog>
+                <SetBudgetDialog categories={categories || []} setBudget={setBudget} />
             </div>
 
             <div className="grid gap-4">

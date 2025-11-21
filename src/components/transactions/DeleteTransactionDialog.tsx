@@ -4,6 +4,7 @@ import { deleteTransaction } from '@/app/actions/transaction'
 import { Trash2, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useLoading } from '@/components/LoadingProvider'
 import {
     Dialog,
     DialogContent,
@@ -18,19 +19,18 @@ import { Button } from '@/components/ui/button'
 
 export function DeleteTransactionDialog({ transactionId }: { transactionId: string }) {
     const [open, setOpen] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
+    const { startLoading, stopLoading, isLoading } = useLoading()
     const router = useRouter()
 
     async function handleDelete() {
-        setIsDeleting(true)
+        startLoading()
         try {
             await deleteTransaction(transactionId)
             setOpen(false)
-            // Router refresh is usually handled by the server action revalidatePath, 
-            // but we can also force a refresh here if needed.
         } catch (error) {
             alert(error instanceof Error ? error.message : 'Gagal menghapus transaksi')
-            setIsDeleting(false)
+        } finally {
+            stopLoading()
         }
     }
 
@@ -61,10 +61,10 @@ export function DeleteTransactionDialog({ transactionId }: { transactionId: stri
                     <Button
                         variant="destructive"
                         onClick={handleDelete}
-                        disabled={isDeleting}
+                        disabled={isLoading}
                         className="bg-red-600 hover:bg-red-700 text-white"
                     >
-                        {isDeleting ? (
+                        {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Menghapus...

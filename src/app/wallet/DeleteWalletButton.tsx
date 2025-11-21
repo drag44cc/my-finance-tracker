@@ -3,6 +3,7 @@
 import { deleteWallet } from './actions'
 import { Trash2, Loader2 } from 'lucide-react'
 import { useState } from 'react'
+import { useLoading } from '@/components/LoadingProvider'
 import {
     Dialog,
     DialogContent,
@@ -17,16 +18,17 @@ import { Button } from '@/components/ui/button'
 
 export function DeleteWalletButton({ walletId }: { walletId: string }) {
     const [open, setOpen] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
+    const { startLoading, stopLoading, isLoading } = useLoading()
 
     async function handleDelete() {
-        setIsDeleting(true)
+        startLoading()
         try {
             await deleteWallet(walletId)
             setOpen(false)
         } catch (error) {
             alert('Gagal menghapus dompet')
-            setIsDeleting(false)
+        } finally {
+            stopLoading()
         }
     }
 
@@ -53,10 +55,10 @@ export function DeleteWalletButton({ walletId }: { walletId: string }) {
                     <Button
                         variant="destructive"
                         onClick={handleDelete}
-                        disabled={isDeleting}
+                        disabled={isLoading}
                         className="bg-red-600 hover:bg-red-700 text-white"
                     >
-                        {isDeleting ? (
+                        {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Menghapus...
