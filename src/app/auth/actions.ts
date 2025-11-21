@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/admin'
 
@@ -32,11 +31,11 @@ export async function login(formData: FormData) {
             }
         }
 
-        redirect(`/login?error=${encodeURIComponent(errorMessage)}`)
+        return { error: errorMessage }
     }
 
     revalidatePath('/', 'layout')
-    redirect('/')
+    return { success: true }
 }
 
 export async function signup(formData: FormData) {
@@ -57,16 +56,16 @@ export async function signup(formData: FormData) {
     })
 
     if (error) {
-        redirect('/login?error=Could not authenticate user')
+        return { error: 'Could not authenticate user' }
     }
 
     revalidatePath('/', 'layout')
-    redirect('/')
+    return { success: true }
 }
 
 export async function signout() {
     const supabase = await createClient()
     await supabase.auth.signOut()
     revalidatePath('/', 'layout')
-    redirect('/login')
+    return { success: true }
 }

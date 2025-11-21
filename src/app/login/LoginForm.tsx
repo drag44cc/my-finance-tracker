@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { login } from './actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,21 +8,33 @@ import { Label } from '@/components/ui/label';
 import { useLoading } from '@/components/LoadingProvider';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
-export function LoginForm({ error }: { error?: string }) {
+export function LoginForm({ error: initialError }: { error?: string }) {
     const { startLoading, stopLoading, isLoading } = useLoading();
     const router = useRouter();
+    const [error, setError] = useState<string | undefined>(initialError);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         startLoading();
+        setError(undefined);
 
         try {
             const formData = new FormData(e.currentTarget);
-            await login(formData);
-            router.refresh();
+            const result = await login(formData);
+
+            if (result?.error) {
+                setError(result.error);
+                toast.error(result.error);
+            } else if (result?.success) {
+                toast.success('Login berhasil!');
+                router.push('/');
+                router.refresh();
+            }
         } catch (error) {
             console.error('Login failed', error);
+            toast.error('Terjadi kesalahan saat login');
         } finally {
             stopLoading();
         }

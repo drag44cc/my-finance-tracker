@@ -1,6 +1,6 @@
 'use client';
 
-import { logout } from '@/app/auth/logout';
+import { signout } from '@/app/auth/actions';
 import { LogOut, Loader2 } from 'lucide-react';
 import { useLoading } from '@/components/LoadingProvider';
 import { useRouter } from 'next/navigation';
@@ -25,7 +25,7 @@ export function LogoutDialog() {
     async function handleLogout() {
         startLoading();
         try {
-            await logout();
+            await signout();
             router.push('/login');
             setOpen(false);
         } catch (error) {
