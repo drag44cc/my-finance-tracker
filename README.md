@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# My Finance Tracker 💰
 
-## Getting Started
+Aplikasi pencatat keuangan pribadi yang modern, cepat, dan mudah digunakan. Dibangun dengan teknologi web terbaru untuk performa maksimal dan pengalaman pengguna yang mulus.
 
-First, run the development server:
+![Dashboard Preview](https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1000)
+*(Anda bisa mengganti gambar ini dengan screenshot aplikasi asli Anda nanti)*
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Fitur Utama
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   **Dashboard Interaktif**: Ringkasan saldo, pemasukan, dan pengeluaran dalam satu tampilan.
+-   **Pencatatan Transaksi**: Tambah pemasukan dan pengeluaran dengan mudah.
+-   **Manajemen Dompet (Wallet)**: Kelola berbagai sumber dana (Tunai, Bank, E-Wallet) dengan saldo terpisah.
+-   **Kategori & Budgeting**: Atur kategori transaksi dan batasi pengeluaran dengan fitur Budget.
+-   **Analisis & Laporan**:
+    -   Grafik pengeluaran mingguan.
+    -   Filter transaksi berdasarkan Bulan & Tahun.
+    -   **Export PDF**: Unduh laporan keuangan dalam format PDF.
+-   **Keamanan**: Sistem login aman menggunakan Supabase Auth.
+-   **Performa Tinggi**: Pagination otomatis untuk memuat ribuan transaksi tanpa lag.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Teknologi yang Digunakan
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+-   **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
+-   **Bahasa**: [TypeScript](https://www.typescriptlang.org/)
+-   **Database & Auth**: [Supabase](https://supabase.com/)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [Shadcn UI](https://ui.shadcn.com/)
+-   **Charts**: [Recharts](https://recharts.org/)
+-   **PDF Generation**: jsPDF
 
-## Learn More
+## 🚀 Cara Menjalankan (Local)
 
-To learn more about Next.js, take a look at the following resources:
+1.  **Clone Repository**
+    ```bash
+    git clone https://github.com/drag44cc/my-finance-tracker.git
+    cd my-finance-tracker
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3.  **Setup Environment Variables**
+    Buat file `.env.local` di root folder dan isi dengan kredensial Supabase Anda:
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+    ```
 
-## Deploy on Vercel
+4.  **Jalankan Server Development**
+    ```bash
+    npm run dev
+    ```
+    Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🌐 Cara Deploy ke Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Aplikasi ini sangat mudah di-deploy menggunakan [Vercel](https://vercel.com).
+
+1.  Push project ini ke GitHub Anda.
+2.  Buka Vercel dan pilih **"Add New Project"**.
+3.  Import repository `my-finance-tracker`.
+4.  Di bagian **Environment Variables**, masukkan semua variable yang ada di `.env.local`.
+5.  Klik **Deploy**.
+
+## 📝 Lisensi
+
+Project ini dibuat untuk keperluan pribadi dan pembelajaran. Silakan dikembangkan lebih lanjut!
